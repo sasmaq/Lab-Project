@@ -1,6 +1,6 @@
 import java.util.*;
 import java.io.*;
-public class VehicleModelDriver {
+public class VMD {
 	public static void main(String[] args) throws IOException{
 		Scanner kb=new Scanner(System.in);
 		
@@ -31,7 +31,7 @@ public class VehicleModelDriver {
 			
 			case 3: choice3(); break;
 			
-			case 4: break;
+			case 4: choice4(); break;
 			
 			case 5: break;
 			
@@ -39,20 +39,27 @@ public class VehicleModelDriver {
 			
 			case 7: break;
 			
-			default: break;
+			default:System.out.print("Error: Wrong choice.\n"); break;
 			}
 			
 			} catch (InputMismatchException e) {System.out.println(e);}
+			  catch (IllegalArgumentException e) {System.out.println(e);}
 			if (mainMenuChoice==8) {
 				mainMenuComplete=true;
 			}
 			
 			else {
-				System.out.print("\nPress Enter key to continue . . .");
 				kb.nextLine();
-				kb.nextLine();
+				enterToContinue();
 			}
 		}//end of loop
+	}
+	
+	public static void enterToContinue() {
+		Scanner kb=new Scanner(System.in);
+		System.out.print("\nPress Enter key to continue . . .");
+		kb.nextLine();
+		//kb.nextLine();
 	}
 	
 	public static void choice1() throws IOException{
@@ -112,7 +119,72 @@ public class VehicleModelDriver {
 		
 	}
 	
-	public static void choice3() throws IOException{
+	public static void choice3() throws IOException, InputMismatchException{
+		String line, modelName;
+		FileInputStream input=new FileInputStream("vehicles.txt");
+		Scanner inputscan=new Scanner(input);
+		Scanner kb=new Scanner(System.in);
+		int stockQuantity, numRentedVehicles;
+		double rentalPricePerDay;
+		boolean subMenuComplete=false, found=false;
+		int subMenuChoice=0;
+		int newStockQuantity;
+		double newRentalPricePerDay;
+		
+		
+		System.out.print("\nEnter model name: ");
+		String userModelName=kb.next();
+		
+		while(inputscan.hasNextLine()) {
+			line=inputscan.nextLine();
+			if(line.toLowerCase().indexOf(userModelName.toLowerCase())!=-1) {
+				Scanner linescan=new Scanner(line);
+				found=true;
+				modelName=linescan.next();
+				stockQuantity=linescan.nextInt();
+				numRentedVehicles=linescan.nextInt();
+				rentalPricePerDay=linescan.nextDouble();
+				VehicleModel vehicle1=new VehicleModel(modelName, stockQuantity, numRentedVehicles, rentalPricePerDay);
+				
+				while(!subMenuComplete) {
+					System.out.print("1. Update stock quantity.\n"
+								   + "2. Update rental price per day.\n"
+								   + "\n"
+								   + "Enter your choice: ");
+					subMenuChoice=kb.nextInt();
+					
+					switch(subMenuChoice) {
+					case 1: System.out.printf("Available stock for %s is %d vehicles, and %d rented vehicles.%n", modelName, stockQuantity, numRentedVehicles);
+							System.out.printf("Enter new stock Quantity: ");
+							newStockQuantity=kb.nextInt();
+							vehicle1.setStockQuantity(newStockQuantity); 
+							System.out.println("Vehicle file has been updated . . .\n"
+											 + "Model "+modelName+" information updated.\n");
+							subMenuComplete=true; 
+							break;
+					
+					case 2: System.out.printf("Current rental price per day for %s is %.2f Saudi Riyals%n", modelName, rentalPricePerDay);
+							System.out.printf("Enter new rental price per day [SAR]: ");
+							newRentalPricePerDay=kb.nextDouble();
+							vehicle1.setRentalPricePerDay(newRentalPricePerDay);
+							System.out.println("Vehicle file has been updated . . .\n"
+									 	+ "Model "+modelName+" information updated.\n"); 
+							subMenuComplete=true; 
+							break;
+					
+					default:System.out.print("Error: Wrong choice.\n"); break;
+					}
+				}
+			}
+		}
+
+		
+		if (!found) {
+			System.out.print("Error: No such model.\n");
+		}
+	}
+	
+	public static void choice4() throws IOException{
 		
 	}
 	
