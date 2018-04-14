@@ -1,5 +1,5 @@
 
-public class VehicleModel {
+public class VM {
 	private String modelName;
 	private int stockQuantity,numRentedVehicles;
 	private double rentalPricePerDay;
@@ -25,11 +25,11 @@ public class VehicleModel {
 		return rentalPricePerDay;
 	}
 	public void setStockQuantity (int stockQuantity) throws IllegalArgumentException{
-		if(stockQuantity<0) throw new IllegalArgumentException();
+		if(stockQuantity<0) throw new IllegalArgumentException("Invalid stock quantity");
 		else this.stockQuantity=stockQuantity;
 	}
 	public void setRentalPricePerDay(double rentalPricePerDay) throws IllegalArgumentException{
-		if(rentalPricePerDay<0) throw new IllegalArgumentException();
+		if(rentalPricePerDay<0) throw new IllegalArgumentException("Invalid rental price per day.");
 		else this.rentalPricePerDay=rentalPricePerDay;
 	}
 	public double rentVehicleModel(int numVehicles, int numDays) throws IllegalArgumentException{
@@ -49,7 +49,7 @@ public class VehicleModel {
 	}
 	public String toString() {
 		String line;
-		line = String.format("%s%t%d%t%d%t%.2f",modelName , stockQuantity , numRentedVehicles , rentalPricePerDay);
+		line = String.format("%-20s%30s%40s%40s%n%n",modelName , stockQuantity , numRentedVehicles , rentalPricePerDay);
 		return line;
 	}
 	public boolean equals(Object  obj) {
