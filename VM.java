@@ -1,5 +1,4 @@
 
-
 class VM {
 	private String modelName;
 	private int stockQuantity, numRentedVehicles;
@@ -46,13 +45,15 @@ class VM {
 	}
 
 	public double rentVehicleModel(int numVehicles, int numDays) throws IllegalArgumentException {
-		if (numDays <= 0)
+		if (numDays < 1 || numDays > 31)
 			throw new IllegalArgumentException("Invalid number of days.");
-		else if(numVehicles<=0) 
+		else if (numVehicles <= 0)
 			throw new IllegalArgumentException("Invalid number of Vehicles.");
-		else if(numVehicles>stockQuantity)
+		else if (numVehicles > stockQuantity)
 			throw new IllegalArgumentException("Number of vehicles > stock quantity.");
 		else {
+			stockQuantity = stockQuantity - numVehicles;
+			numRentedVehicles = numRentedVehicles + numVehicles;
 			double cost;
 			cost = numVehicles * (rentalPricePerDay * numDays);
 			return cost;
@@ -60,7 +61,7 @@ class VM {
 	}
 
 	public void getVehiclesFromCustomer(int numVehicles) throws IllegalArgumentException {
-		if (numVehicles <= 0 || numVehicles>numRentedVehicles)
+		if (numVehicles <= 0 || numVehicles > numRentedVehicles)
 			throw new IllegalArgumentException("Invalid number of vehicles.");
 		else {
 			stockQuantity = stockQuantity + numVehicles;
@@ -76,7 +77,8 @@ class VM {
 
 	public boolean equals(Object obj) {
 		boolean check = false;
-		if (modelName.toLowerCase().equals(obj)) check = true;
+		if (modelName.toLowerCase().equals(obj))
+			check = true;
 		return check;
 	}
 }
