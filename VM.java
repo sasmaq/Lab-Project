@@ -1,6 +1,6 @@
 
 
-class VehicleModel {
+class VM {
 	private String modelName;
 	private int stockQuantity, numRentedVehicles;
 	private double rentalPricePerDay;
