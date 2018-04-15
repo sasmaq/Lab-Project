@@ -65,23 +65,24 @@ public class VMD {
 				enterToContinue();
 			}
 		} // end of loop
+		kb.close();
 	}
 
 	public static void enterToContinue() {
 		Scanner kb = new Scanner(System.in);
-		System.out.print("\nPress Enter key to continue . . .");
+		System.out.print("\nPress Enter key to continue . . .\n");
 		kb.nextLine();
 
 	}
-	
+
 	public static void updetar(VehicleModel[] array) throws IOException {
 		PrintWriter pwriter = new PrintWriter("vehicles.txt");
-		for(int i=0 ; i<=array.length-2;i++) {
+		for (int i = 0; i <= array.length - 2; i++) {
 			pwriter.println(array[i].toString());
 		}
-		pwriter.print(array[array.length-1].toString());
+		pwriter.print(array[array.length - 1].toString());
 		pwriter.close();
-		
+
 		System.out.println("Vehicle file has been updated . . . ");
 	}
 
@@ -102,7 +103,9 @@ public class VMD {
 			rentalPricePerDay = inputscan.nextDouble();
 
 			System.out.printf("%-20s%30d%40d%40.2f%n", modelName, stockQuantity, numRentedVehicles, rentalPricePerDay);
+			
 		}
+		inputscan.close();
 	}
 
 	public static void choice2() throws IOException {
@@ -110,11 +113,8 @@ public class VMD {
 		FileInputStream input = new FileInputStream("vehicles.txt");
 		Scanner inputscan = new Scanner(input);
 		Scanner kb = new Scanner(System.in);
-		//int stockQuantity, numRentedVehicles;
-		//double rentalPricePerDay;
 		boolean found = false;
-		VehicleModel VehicleInfo = null;
-
+		
 		System.out.print("\nEnter model name: ");
 		String userModelName = kb.next();
 
@@ -123,12 +123,12 @@ public class VMD {
 			if (line.toLowerCase().indexOf(userModelName.toLowerCase()) != -1) {
 				Scanner linescan = new Scanner(line);
 				found = true;
-				VehicleInfo = new VehicleModel(linescan.next(), linescan.nextInt(), linescan.nextInt(),
+				VehicleModel VehicleInfo = new VehicleModel(linescan.next(), linescan.nextInt(), linescan.nextInt(),
 						linescan.nextDouble());
 				System.out.printf("%-20s%30s%40s%40s%n%n", "Model name", "Stock Quantity", "Number of rented vehicles",
 						"Rental Price Per Day (SAR)");
-				System.out.print(VehicleInfo.toString());
-
+				System.out.print(VehicleInfo.toString()+"\n");
+				linescan.close();
 			}
 		} // loop end
 
@@ -142,21 +142,10 @@ public class VMD {
 	}
 
 	public static void choice3() throws IOException, InputMismatchException {
-		String line, modelName;
-		FileInputStream input = new FileInputStream("vehicles.txt");
-		Scanner inputscan = new Scanner(input);
 		
-		//int stockQuantity, numRentedVehicles;
-		//double rentalPricePerDay;
 		boolean subMenuComplete = false, found = false;
 		int subMenuChoice = 0;
-		//int newStockQuantity;
-		//double newRentalPricePerDay;
-
-		
 		int c = 0, i = 0;
-		int returnedVehicles;
-		
 
 		FileInputStream inSC = new FileInputStream("vehicles.txt");
 		Scanner FileScannerC = new Scanner(inSC);
@@ -165,7 +154,7 @@ public class VMD {
 		while (FileScannerC.hasNextLine()) {
 			FileScannerC.nextLine();
 			c++;
-		}
+		} // loop end
 		VehicleModel[] dataArray = new VehicleModel[c];
 
 		FileScannerC.close();
@@ -175,17 +164,16 @@ public class VMD {
 		for (i = 0; i < dataArray.length; i++) {
 			dataArray[i] = new VehicleModel(FileScanner.next(), FileScanner.nextInt(), FileScanner.nextInt(),
 					FileScanner.nextDouble());
-
 		}
 
 		FileScanner.close();
 
 		System.out.print("\nEnter model name: ");
-		String userModelName = kb.next().toLowerCase();
+		String userModelName = kb.next();
 
 		for (i = 0; i <= dataArray.length - 1; i++) {
 
-			if (dataArray[i].equals(userModelName)) {
+			if (dataArray[i].equals(userModelName.toLowerCase())) {
 				found = true;
 				c = i;
 			}
@@ -200,19 +188,22 @@ public class VMD {
 
 				switch (subMenuChoice) {
 				case 1:
-					System.out.printf("Available stock for %s is %d Vehicles,and %d rented vehicles.%n",dataArray[c].getModelName(),dataArray[c].getStockQuantity(),dataArray[c].getNumRentedVehicles());
+					System.out.printf("Available stock for %s is %d Vehicles,and %d rented vehicles.%n",
+							dataArray[c].getModelName(), dataArray[c].getStockQuantity(),
+							dataArray[c].getNumRentedVehicles());
 					System.out.print("Enter new stock quantity: ");
 					dataArray[c].setStockQuantity(kb.nextInt());
-					
+
 					updetar(dataArray);
 					System.out.printf("Model %s information updated.%n", dataArray[c].getModelName());
 					subMenuComplete = true;
 					break;
 				case 2:
-					System.out.printf("Currrent rental price per day for %s is %.2f Saudi Riyals.%n",dataArray[c].getModelName(),dataArray[c].getRentalPricePerDay());
+					System.out.printf("Currrent rental price per day for %s is %.2f Saudi Riyals.%n",
+							dataArray[c].getModelName(), dataArray[c].getRentalPricePerDay());
 					System.out.print("Enter new rental price per day [SAR]: ");
 					dataArray[c].setRentalPricePerDay(kb.nextDouble());
-					
+
 					updetar(dataArray);
 					System.out.printf("Model %s information updated.%n", dataArray[c].getModelName());
 					subMenuComplete = true;
@@ -220,66 +211,9 @@ public class VMD {
 				default:
 					System.out.print("Error: Wrong choice.\n");
 					break;
-				}	
-			}		
-		}
-		
-		/*
-		System.out.print("\nEnter model name: ");
-		String userModelName = kb.next();
-
-		while (inputscan.hasNextLine()) {
-			line = inputscan.nextLine();
-			if (line.toLowerCase().indexOf(userModelName.toLowerCase()) != -1) {
-				Scanner linescan = new Scanner(line);
-				found = true;
-				modelName = linescan.next();
-				stockQuantity = linescan.nextInt();
-				numRentedVehicles = linescan.nextInt();
-				rentalPricePerDay = linescan.nextDouble();
-				VehicleModel vehicle1 = new VehicleModel(modelName, stockQuantity, numRentedVehicles,
-						rentalPricePerDay);
-
-				while (!subMenuComplete) {
-					System.out.print("1. Update stock quantity.\n" + "2. Update rental price per day.\n" + "\n"
-							+ "Enter your choice: ");
-					subMenuChoice = kb.nextInt();
-
-					switch (subMenuChoice) {
-					case 1:
-						System.out.printf("Available stock for %s is %d vehicles, and %d rented vehicles.%n", modelName,
-								stockQuantity, numRentedVehicles);
-						System.out.printf("Enter new stock Quantity: ");
-						newStockQuantity = kb.nextInt();
-						vehicle1.setStockQuantity(newStockQuantity);
-						System.out.println("Vehicle file has been updated . . .\n" + "Model " + modelName
-								+ " information updated.\n");
-						subMenuComplete = true;
-						break;
-
-					case 2:
-						System.out.printf("Current rental price per day for %s is %.2f Saudi Riyals%n", modelName,
-								rentalPricePerDay);
-						System.out.printf("Enter new rental price per day [SAR]: ");
-						newRentalPricePerDay = kb.nextDouble();
-						vehicle1.setRentalPricePerDay(newRentalPricePerDay);
-						System.out.println("Vehicle file has been updated . . .\n" + "Model " + modelName
-								+ " information updated.\n");
-						subMenuComplete = true;
-						break;
-
-					default:
-						System.out.print("Error: Wrong choice.\n");
-						break;
-					}
 				}
-			}
-			
+			} // loop end
 		}
-
-		if (!found) {
-			System.out.print("Error: No such model.\n");
-		}*/
 	}
 
 	public static void choice4() throws IOException {
@@ -291,33 +225,36 @@ public class VMD {
 				"Rental price per day(SAR)", "Subtotal(SAR)");
 		boolean done = false, found = false;
 		char YN;
-		FileInputStream inS = new FileInputStream("vehicles.txt");
-		Scanner FileScannerC = new Scanner(inS);
+		
+		FileInputStream inSC = new FileInputStream("vehicles.txt");
+		Scanner FileScannerC = new Scanner(inSC);
 		Scanner kb = new Scanner(System.in);
 
 		while (FileScannerC.hasNextLine()) {
 			FileScannerC.nextLine();
 			c++;
-		}
-		FileScannerC.close();
+		} // loop End
+		
 		VehicleModel[] dataArray = new VehicleModel[c];
+
+		FileScannerC.close();
+
+		FileInputStream inS = new FileInputStream("vehicles.txt");
 		Scanner FileScanner = new Scanner(inS);
 		for (i = 0; i < dataArray.length; i++) {
 			dataArray[i] = new VehicleModel(FileScanner.next(), FileScanner.nextInt(), FileScanner.nextInt(),
 					FileScanner.nextDouble());
-
 		}
 
 		FileScanner.close();
-
-		i = 0;
+		
 		while (!done) {
 			System.out.print("\nEnter model name: ");
-			String userModelName = kb.next().toLowerCase();
+			String userModelName = kb.next();
 
 			for (i = 0; i <= dataArray.length - 1; i++) {
 
-				if (dataArray[i].equals(userModelName)) {
+				if (dataArray[i].equals(userModelName.toLowerCase())) {
 					found = true;
 					c = i;
 				}
@@ -338,24 +275,22 @@ public class VMD {
 				total = total + subTotal;
 
 				updetar(dataArray);
-				System.out.printf("Model %s information updated.", dataArray[c].getModelName());
-
-				System.out.print("/nDo you want to rent another model? (y/n): ");
+				System.out.printf("Model %s information updated.%n%n", dataArray[c].getModelName());
+			}
+				System.out.print("Do you want to rent another model? (y/n): ");
 				YN = kb.next().charAt(0);
 				if (YN == 'n') {
 					done = true;
 					if (total != 0) {
 						System.out.println(tInfo);
-						System.out.printf("%120s%40.2f", "Total", total);
+						System.out.printf("%130s%40.2f", "Total", total);
 					}
 				} else if (YN == 'y') {
 					done = false;
-				} else
-					;
-			}
-		}
+				} else ;
+			} // loop End
+		
 		FileScanner.close();
-
 	}
 
 	public static void choice5() throws IOException {
@@ -371,7 +306,8 @@ public class VMD {
 		while (FileScannerC.hasNextLine()) {
 			FileScannerC.nextLine();
 			c++;
-		}
+		} // loop End
+		
 		VehicleModel[] dataArray = new VehicleModel[c];
 
 		FileScannerC.close();
@@ -381,17 +317,16 @@ public class VMD {
 		for (i = 0; i < dataArray.length; i++) {
 			dataArray[i] = new VehicleModel(FileScanner.next(), FileScanner.nextInt(), FileScanner.nextInt(),
 					FileScanner.nextDouble());
-
 		}
 
 		FileScanner.close();
 
 		System.out.print("\nEnter model name: ");
-		String userModelName = kb.next().toLowerCase();
+		String userModelName = kb.next();
 
 		for (i = 0; i <= dataArray.length - 1; i++) {
 
-			if (dataArray[i].equals(userModelName)) {
+			if (dataArray[i].equals(userModelName.toLowerCase())) {
 				found = true;
 				c = i;
 			}
@@ -409,7 +344,7 @@ public class VMD {
 				dataArray[c].getVehiclesFromCustomer(returnedVehicles);
 
 				updetar(dataArray);
-				System.out.printf("Model %s information updated.", dataArray[c].getModelName());
+				System.out.printf("Model %s information updated.%n%n", dataArray[c].getModelName());
 			}
 		}
 
@@ -419,8 +354,7 @@ public class VMD {
 		int c = 0, i = 0;
 		int stock;
 		double priceD;
-		
-		
+
 		boolean found = false;
 
 		FileInputStream inSC = new FileInputStream("vehicles.txt");
@@ -430,7 +364,7 @@ public class VMD {
 		while (FileScannerC.hasNextLine()) {
 			FileScannerC.nextLine();
 			c++;
-		}
+		} // loop End
 		VehicleModel[] dataArray = new VehicleModel[c];
 
 		FileScannerC.close();
@@ -455,31 +389,31 @@ public class VMD {
 				c = i;
 			}
 		}
-		if(found) System.out.println("Error: This model exists.");
+		if (found)
+			System.out.println("Error: This model exists.");
 		else {
 			System.out.println("Enter stock quantity and rental price per day:");
 			stock = kb.nextInt();
 			priceD = kb.nextDouble();
-			if(stock<=0 || priceD <=0)System.out.println("Error: Invalid stock quantity or rental price.");
+			if (stock <= 0 || priceD <= 0)
+				System.out.println("Error: Invalid stock quantity or rental price.");
 			else {
-			VehicleModel newVehical = new VehicleModel(userModelName,stock,0,priceD);
-			VehicleModel[] updataArray = new VehicleModel[dataArray.length+1];
-			for(i=0;i<updataArray.length-1 ; i++) {
-				updataArray[i]=dataArray[i];
+				VehicleModel newVehical = new VehicleModel(userModelName, stock, 0, priceD);
+				VehicleModel[] updataArray = new VehicleModel[dataArray.length + 1];
+				for (i = 0; i < updataArray.length - 1; i++) {
+					updataArray[i] = dataArray[i];
+				}
+				updataArray[i] = newVehical;
+				updetar(updataArray);
+				System.out.println("Model successfully added . . . ");
 			}
-			updataArray[i] = newVehical;
-			updetar(updataArray);
-			System.out.println("Model successfully added . . . ");
-			}
-			
+
 		}
 	}
 
 	public static void choice7() throws IOException {
 		int c = 0, i = 0;
-		
-		
-		
+
 		boolean found = false;
 
 		FileInputStream inSC = new FileInputStream("vehicles.txt");
@@ -489,7 +423,8 @@ public class VMD {
 		while (FileScannerC.hasNextLine()) {
 			FileScannerC.nextLine();
 			c++;
-		}
+		} // loop End
+		
 		VehicleModel[] dataArray = new VehicleModel[c];
 
 		FileScannerC.close();
@@ -499,7 +434,6 @@ public class VMD {
 		for (i = 0; i < dataArray.length; i++) {
 			dataArray[i] = new VehicleModel(FileScanner.next(), FileScanner.nextInt(), FileScanner.nextInt(),
 					FileScanner.nextDouble());
-
 		}
 
 		FileScanner.close();
@@ -514,16 +448,18 @@ public class VMD {
 				c = i;
 			}
 		}
-		if(!found) System.out.println("Error: No such model.");
+		if (!found)
+			System.out.println("Error: No such model.");
 		else {
-			if(dataArray[c].getNumRentedVehicles() != 0)System.out.println("Error: Rented Vehicles are out");
+			if (dataArray[c].getNumRentedVehicles() != 0)
+				System.out.println("Error: Rented Vehicles are out");
 			else {
-				VehicleModel[] updataArray = new VehicleModel[dataArray.length-1];
-				for(i=c;i<dataArray.length-1;i++) {
-					dataArray[i]=dataArray[i+1];
+				VehicleModel[] updataArray = new VehicleModel[dataArray.length - 1];
+				for (i = c; i < dataArray.length - 1; i++) {
+					dataArray[i] = dataArray[i + 1];
 				}
-				for(i=0;i<updataArray.length;i++) {
-					updataArray[i]=dataArray[i];
+				for (i = 0; i < updataArray.length; i++) {
+					updataArray[i] = dataArray[i];
 				}
 				updetar(updataArray);
 				System.out.println("Model successfully deleted . . . ");
