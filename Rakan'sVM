@@ -1,0 +1,293 @@
+import java.io.*;
+import java.util.*;
+
+public class VehicleModel {
+	private String modelName;
+	private int stockQuantity,numRentedVehicles;
+	private double rentalPricePerDay;
+	
+		public VehicleModel(String modelName, int stockQuantity, int numRentedVehicles, double rentalPricePerDay) throws IllegalArgumentException{
+			if (stockQuantity<0 || stockQuantity<0 || rentalPricePerDay<0) throw new IllegalArgumentException();
+			this.modelName = modelName;
+			this.stockQuantity = stockQuantity;
+			this.numRentedVehicles = numRentedVehicles;
+			this.rentalPricePerDay = rentalPricePerDay;
+		}
+	
+	
+	public String getModelName() {
+		return modelName;
+	}
+	public int getStockQuantity() {
+		return stockQuantity;
+	}
+	public int getNumRentedVehicles() {
+		return numRentedVehicles;
+	}
+	public double getRentalPricePerDay() {
+		return rentalPricePerDay;
+	}
+	
+	public void setStockQuantity (int stockQuantity) throws IllegalArgumentException, IOException{
+		if(stockQuantity<0) throw new IllegalArgumentException("Invalid stock quantity");
+		else {
+			this.stockQuantity=stockQuantity;
+			
+			File input=new File("vehicles.txt");
+			Scanner inputscan=new Scanner(input);
+			
+			int size=0;
+			while(inputscan.hasNextLine()) {
+				inputscan.nextLine();
+				size++;
+				}
+			
+			input=new File("vehicles.txt");
+			inputscan=new Scanner(input);
+			
+			String[] line=new String[size];
+			for(int i=0; i<size; i++) {
+				line[i]=inputscan.nextLine();
+				if(line[i].toLowerCase().indexOf(modelName.toLowerCase())!=-1) {
+					line[i]=toString();
+					}
+				}
+			inputscan.close();
+			File output=new File("vehicles.txt");
+			output.createNewFile();
+			PrintWriter pwriter=new PrintWriter(output);
+			
+			for(int k = 0; k <= line.length - 2; k++)
+			       pwriter.println(line[k]); 
+			     
+			       pwriter.print(line[line.length - 1]);
+			       
+			       pwriter.close();
+			       inputscan.close();
+			       input.delete();
+			       output.renameTo(input);
+			}
+	}
+	
+	public void setRentalPricePerDay(double rentalPricePerDay) throws IllegalArgumentException, IOException{
+		if(rentalPricePerDay<0) throw new IllegalArgumentException("Invalid rental price per day.");
+		else {
+			this.rentalPricePerDay=rentalPricePerDay;
+			
+			File input=new File("vehicles.txt");
+			Scanner inputscan=new Scanner(input);
+			
+			int size=0;
+			while(inputscan.hasNextLine()) {
+				inputscan.nextLine();
+				size++;
+				}
+			
+			input=new File("vehicles.txt");
+			inputscan=new Scanner(input);
+			
+			String[] line=new String[size];
+			for(int i=0; i<size; i++) {
+				line[i]=inputscan.nextLine();
+				if(line[i].toLowerCase().indexOf(modelName.toLowerCase())!=-1) {
+					line[i]=toString();
+					}
+				}
+			inputscan.close();
+			File output=new File("vehicles.txt");
+			output.createNewFile();
+			PrintWriter pwriter=new PrintWriter(output);
+			
+			for(int k = 0; k <= line.length - 2; k++)
+			       pwriter.println(line[k]); 
+			     
+			       pwriter.print(line[line.length - 1]);
+			       
+			       pwriter.close();
+			       inputscan.close();
+			       input.delete();
+			       output.renameTo(input);
+		}
+	}
+	
+	public double rentVehicleModel(int numVehicles, int numDays) throws IllegalArgumentException, IOException{
+		if(numDays>31 || numDays<1) throw new IllegalArgumentException("Invalid number of days.");
+		else if(numVehicles>stockQuantity) throw new IllegalArgumentException("Number of vehicles > stock quantity.");
+		else if(numVehicles<1) throw new IllegalArgumentException("Invalid number of vehicles.");
+		else {
+			stockQuantity-=numVehicles;
+			numRentedVehicles+=numVehicles;
+			
+			File input=new File("vehicles.txt");
+			Scanner inputscan=new Scanner(input);
+			
+			int size=0;
+			while(inputscan.hasNextLine()) {
+				inputscan.nextLine();
+				size++;
+				}
+			
+			input=new File("vehicles.txt");
+			inputscan=new Scanner(input);
+			
+			String[] line=new String[size];
+			for(int i=0; i<size; i++) {
+				line[i]=inputscan.nextLine();
+				if(line[i].toLowerCase().indexOf(modelName.toLowerCase())!=-1) {
+					line[i]=toString();
+					}
+				}
+			inputscan.close();
+			File output=new File("vehicles.txt");
+			output.createNewFile();
+			PrintWriter pwriter=new PrintWriter(output);
+			
+			for(int k = 0; k <= line.length - 2; k++)
+			       pwriter.println(line[k]); 
+			     
+			       pwriter.print(line[line.length - 1]);
+			       
+			       pwriter.close();
+			       inputscan.close();
+			       input.delete();
+			       output.renameTo(input);
+			
+		return numVehicles*(rentalPricePerDay*numDays);
+		}
+	}
+	
+	public void getVehiclesFromCustomer(int numVehicles) throws IllegalArgumentException, IOException{
+		if(numVehicles<0|| numVehicles>numRentedVehicles) throw new IllegalArgumentException("Invalid number of vehicles.");
+		else {
+		stockQuantity = stockQuantity + numVehicles;
+		numRentedVehicles = numRentedVehicles - numVehicles;
+		
+		File input=new File("vehicles.txt");
+		Scanner inputscan=new Scanner(input);
+		
+		int size=0;
+		while(inputscan.hasNextLine()) {
+			inputscan.nextLine();
+			size++;
+			}
+		
+		input=new File("vehicles.txt");
+		inputscan=new Scanner(input);
+		
+		String[] line=new String[size];
+		for(int i=0; i<size; i++) {
+			line[i]=inputscan.nextLine();
+			if(line[i].toLowerCase().indexOf(modelName.toLowerCase())!=-1) {
+				line[i]=toString();
+				}
+			}
+		inputscan.close();
+		File output=new File("vehicles.txt");
+		output.createNewFile();
+		PrintWriter pwriter=new PrintWriter(output);
+		
+		for(int k = 0; k <= line.length - 2; k++)
+		       pwriter.println(line[k]); 
+		     
+		       pwriter.print(line[line.length - 1]);
+		       
+		       pwriter.close();
+		       inputscan.close();
+		       input.delete();
+		       output.renameTo(input);
+		}
+	}
+	
+	public void addVehicle() throws IOException{
+		if(stockQuantity<1|| rentalPricePerDay<=0) {
+			System.out.println("Error: Invalid stockQuantity or rental price.");
+		}
+		else {
+		File input=new File("vehicles.txt");
+		Scanner inputscan=new Scanner(input);
+		
+		int size=0;
+		while(inputscan.hasNextLine()) {
+			inputscan.nextLine();
+			size++;
+			}
+		
+		input=new File("vehicles.txt");
+		inputscan=new Scanner(input);
+		
+		String[] line=new String[size];
+		for(int i=0; i<size; i++) {
+			line[i]=inputscan.nextLine();
+			/*if(line[i].toLowerCase().indexOf(modelName.toLowerCase())!=-1) {
+				line[i]=toString();
+				}*/
+			}
+		inputscan.close();
+		File output=new File("vehicles.txt");
+		output.createNewFile();
+		PrintWriter pwriter=new PrintWriter(output);
+		
+		for(int k = 0; k <= line.length - 1; k++)
+		       pwriter.println(line[k]); 
+		     
+		       pwriter.print(toString());
+		       
+		       pwriter.close();
+		       inputscan.close();
+		       input.delete();
+		       output.renameTo(input);
+		}
+	}
+	
+	public void removeVehicle() throws IOException{
+		if(numRentedVehicles>0) {
+			System.out.println("Error: There are previously rented vehicles, Model cannot be deleted.");
+		}
+		else {
+		File input=new File("vehicles.txt");
+		Scanner inputscan=new Scanner(input);
+		
+		int size=0;
+		while(inputscan.hasNextLine()) {
+			inputscan.nextLine();
+			size++;
+			}
+		size--;
+		
+		input=new File("vehicles.txt");
+		inputscan=new Scanner(input);
+		
+		String[] line=new String[size];
+		for(int i=0; i<size; i++) {
+			line[i]=inputscan.nextLine();
+			if(line[i].toLowerCase().indexOf(modelName.toLowerCase())!=-1) {
+				i--;
+				}
+			}
+		inputscan.close();
+		File output=new File("vehicles.txt");
+		output.createNewFile();
+		PrintWriter pwriter=new PrintWriter(output);
+		
+		for(int k = 0; k <= line.length - 2; k++)
+		       pwriter.println(line[k]); 
+		     
+		       pwriter.print(line[line.length - 1]);
+		       
+		       pwriter.close();
+		       inputscan.close();
+		       input.delete();
+		       output.renameTo(input);
+		}
+	}
+	
+	public String toString() {
+		String line;
+		line = String.format("%-19s\t\t    %36d\t\t %11d\t\t\t\t %5.2f",modelName , stockQuantity , numRentedVehicles , rentalPricePerDay);
+		return line;
+	}
+	public boolean equals(Object  obj) {
+		boolean check = false;
+		return check;
+	}
+}
