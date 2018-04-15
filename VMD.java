@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-public class VehicleModelDriver {
+public class VMD {
 	public static void main(String[] args) throws IOException {
 		Scanner kb = new Scanner(System.in);
 
