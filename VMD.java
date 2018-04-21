@@ -54,8 +54,8 @@ public class VehicleModelDriver {
 				}
 
 			} catch (InputMismatchException e) {
-				kb.next();
 				System.out.println(e);
+					kb.nextLine();
 				enterToContinue();
 			} catch (IllegalArgumentException e) {
 				System.out.println(e);
@@ -260,10 +260,10 @@ public class VehicleModelDriver {
 						updetar(dataArray);
 						System.out.printf("Model %s information updated.%n%n", dataArray[i].getModelName());
 					}
-				}
+				}}
 				do {
 				System.out.print("Do you want to rent another model? (y/n): ");
-				YN = kb.next().charAt(0);
+				YN = kb.next().toLowerCase().charAt(0);
 				if (YN == 'n') {
 					done = true;
 					if (total != 0) {
@@ -277,7 +277,7 @@ public class VehicleModelDriver {
 					done = false;
 				} 
 				}while(YN != 'n' && YN != 'y');
-			}
+			
 		} // loop End
 		FileScanner.close();
 		outB.close();
