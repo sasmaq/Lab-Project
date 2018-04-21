@@ -1,12 +1,13 @@
 
-class VM {
+
+class VehicleModel {
 	private String modelName;
 	private int stockQuantity, numRentedVehicles;
 	private double rentalPricePerDay;
 
 	public VehicleModel(String modelName, int stockQuantity, int numRentedVehicles, double rentalPricePerDay)
 			throws IllegalArgumentException {
-		if (stockQuantity < 0 || stockQuantity < 0 || rentalPricePerDay < 0)
+		if (modelName == null || stockQuantity < 0 || numRentedVehicles < 0 || rentalPricePerDay < 0)
 			throw new IllegalArgumentException();
 		this.modelName = modelName;
 		this.stockQuantity = stockQuantity;
@@ -76,9 +77,15 @@ class VM {
 	}
 
 	public boolean equals(Object obj) {
-		boolean check = false;
-		if (modelName.toLowerCase().equals(obj))
-			check = true;
-		return check;
+		if (obj == null) {
+
+			return false;
+		} else if (getClass() != obj.getClass()) {
+
+			return false;
+		} else {
+			VehicleModel model = (VehicleModel) obj;
+			return modelName.toLowerCase().equals(model.modelName.toLowerCase());
+		}
 	}
 }
