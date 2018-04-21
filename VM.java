@@ -1,5 +1,4 @@
 
-
 class VehicleModel {
 	private String modelName;
 	private int stockQuantity, numRentedVehicles;
@@ -89,3 +88,4 @@ class VehicleModel {
 		}
 	}
 }
+
